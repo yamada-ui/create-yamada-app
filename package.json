@@ -1,0 +1,60 @@
+{
+  "name": "create-yamada-app",
+  "version": "15.0.0-canary.25",
+  "keywords": [
+    "react",
+    "next",
+    "next.js",
+    "remix"
+  ],
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yamada-ui/create-yamada-app"
+  },
+  "author": "Yamada UI Team <hirotomo.yamada@avap.co.jp>",
+  "license": "MIT",
+  "bin": {
+    "create-yamada-app": "./dist/run.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "ncc build ./index.ts -w -o dist/",
+    "build": "pnpm release",
+    "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.5.0",
+    "@types/ci-info": "2.0.0",
+    "@types/cross-spawn": "6.0.0",
+    "@types/node": "20.14.2",
+    "@types/prompts": "2.4.2",
+    "@types/tar": "6.1.13",
+    "@types/validate-npm-package-name": "4.0.2",
+    "@vercel/ncc": "0.34.0",
+    "async-sema": "^3.1.1",
+    "ci-info": "watson/ci-info#f43f6a1cefff47fb361c88cf4b943fdbcaafe540",
+    "commander": "2.20.0",
+    "conf": "10.2.0",
+    "cross-spawn": "7.0.3",
+    "eslint": "9.x",
+    "eslint-config-prettier": "^9.1.0",
+    "fast-glob": "3.3.1",
+    "globals": "^15.5.0",
+    "picocolors": "1.0.0",
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "0.3.0",
+    "prompts": "2.4.2",
+    "tar": "7.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.13.0",
+    "update-check": "1.5.4",
+    "validate-npm-package-name": "5.0.1"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  }
+}
