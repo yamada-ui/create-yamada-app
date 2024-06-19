@@ -1,7 +1,7 @@
 import { PackageManager } from '../../../helpers';
 
 // add it when create template
-export type TemplateType = 'app-empty' | 'app' | 'default' | 'default-empty';
+export type TemplateType = 'app-empty' | 'app' | 'pages' | 'pages-empty';
 
 export type TemplateMode = 'js' | 'ts';
 
