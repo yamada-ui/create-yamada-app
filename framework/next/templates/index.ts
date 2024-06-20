@@ -10,7 +10,7 @@ import { Sema } from 'async-sema';
 
 import { InstallTemplateArgs } from './types';
 
-export const SRC_DIR_NAMES = ['app', 'pages', 'styles'];
+export const SRC_DIR_NAMES = ['app', 'pages', 'components', 'theme'];
 
 /**
  * Install a Next.js internal template to a given `root` directory.
