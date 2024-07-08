@@ -7,10 +7,20 @@ import prompts, { InitialReturnValue } from 'prompts';
 import fs from 'fs';
 import ciInfo from 'ci-info';
 import { cyan, green, red, yellow, bold, blue } from 'picocolors';
-import { getPkgManager, isFolderEmpty, validateNpmName } from './helpers';
+import {
+  PackageManager,
+  getPkgManager,
+  isFolderEmpty,
+  validateNpmName,
+} from './helpers';
 import { DownloadError, createNextApp } from './framework/next/create-next-app';
 
 let projectPath: string = '';
+
+const handleSigTerm = () => process.exit(0);
+
+process.on('SIGINT', handleSigTerm);
+process.on('SIGTERM', handleSigTerm);
 
 const onPromptState = (state: {
   value: InitialReturnValue;
@@ -31,16 +41,20 @@ const program = new Command(packageJson.name)
   .arguments('[project-directory]')
   .usage(`${green('[project-directory]')} [options]`)
   .action((name) => (projectPath = name))
-  .option('--ts, --typescript', `Initialize as a TypeScript project. (default)`)
-  .option('--js, --javascript', `Initialize as a JavaScript project.`)
-  .option('--eslint', `Initialize with eslint config.`)
-  .option('--app', `Initialize as an App Router project.`)
   .option('--src-dir', `Initialize inside a \`src/\` directory.`)
+  .option(
+    '-e, --example [name]|[github-url]',
+    `
+    An example to bootstrap the app with. You can use an example name
+    from the official Next.js repo or a GitHub URL. The URL can use
+    any branch and/or subdirectory
+    `,
+  )
+  // .option('-h, --help', '')
   .option(
     '--import-alias <alias-to-configure>',
     `Specify import alias to use (default "@/*").`,
   )
-  .option('--empty', `Initialize an empty project.`)
   .option(
     '--use-npm',
     `Explicitly tell the CLI to bootstrap the application using npm`,
@@ -54,8 +68,8 @@ const program = new Command(packageJson.name)
     `Explicitly tell the CLI to bootstrap the application using Yarn`,
   )
   .option(
-    '--use-bun',
-    `Explicitly tell the CLI to bootstrap the application using Bun`,
+    '--reset-preferences',
+    `Explicitly tell the CLI to reset any stored preferences`,
   )
   .allowUnknownOption()
   .parse(process.argv)
@@ -63,18 +77,12 @@ const program = new Command(packageJson.name)
 
 console.log('program ================== ', program);
 
-const packageManager = !!program.useNpm
-  ? 'npm'
-  : !!program.usePnpm
-    ? 'pnpm'
-    : !!program.useYarn
-      ? 'yarn'
-      : !!program.useBun
-        ? 'bun'
-        : getPkgManager();
+const packageManager = selectPackageManager();
 
 async function run(): Promise<void> {
   const conf = new Conf({ projectName: 'create-yamada-app' });
+
+  console.log('conf ================== ', conf);
 
   if (program.resetPreferences) {
     conf.clear();
@@ -135,6 +143,13 @@ async function run(): Promise<void> {
     process.exit(1);
   }
 
+  if (program.example === true) {
+    console.error(
+      'Please provide an example name or url, otherwise remove the example option.',
+    );
+    process.exit(1);
+  }
+
   // /**
   //  * Verify the project dir is empty or doesn't exist
   //  */
@@ -146,37 +161,60 @@ async function run(): Promise<void> {
     process.exit(1);
   }
 
-  const res = await prompts({
-    onState: onPromptState,
-    type: 'select',
-    name: 'framework',
-    message: 'Which framework do you use?',
-    choices: [
-      { title: 'Next.js', value: 'next' },
-      { title: 'React', value: 'react' },
-      { title: 'Remix', value: 'remix' },
-    ],
-  });
-
-  console.log('framework ================== ', res);
-
-  const isNext = res.framework === 'next';
-  const isReact = res.framework === 'react';
-  const isRemix = res.framework === 'remix';
-
+  const example = typeof program.example === 'string' && program.example.trim();
   const preferences = (conf.get('preferences') || {}) as Record<
     string,
     boolean | string
   >;
 
+  let isNext;
+  let isReact;
+  let isRemix;
+  if (!example) {
+    /**
+     * select framework
+     */
+    const res = await prompts({
+      onState: onPromptState,
+      type: 'select',
+      name: 'framework',
+      message: 'Which framework do you use?',
+      choices: [
+        { title: 'Next.js', value: 'next' },
+        { title: 'React', value: 'react' },
+        { title: 'Remix', value: 'remix' },
+      ],
+    });
+    isNext = res.framework === 'next';
+    isReact = res.framework === 'react';
+    isRemix = res.framework === 'remix';
+  }
+
+  if (!isNext) {
+    console.log(`\nCreating a new Next.js app in ${resolvedProjectPath}.`);
+
+    try {
+      await createNextApp({
+        appPath: resolvedProjectPath,
+        packageManager,
+        example: example && example !== 'default' ? example : undefined,
+        srcDir: program.srcDir,
+        importAlias: program.importAlias,
+        skipInstall: program.skipInstall,
+      });
+    } catch (reason) {
+      if (!(reason instanceof DownloadError)) {
+        throw reason;
+      }
+    }
+  }
+
   // /**
   //  * If the user does not provide the necessary flags, prompt them for whether to use TS or JS.
   //  */
-  if (true) {
+  if (!example) {
     // usage: nextjs
     const defaults: typeof preferences = {
-      typescript: true,
-      eslint: true,
       app: true,
       srcDir: false,
       importAlias: '@/*',
@@ -335,29 +373,6 @@ async function run(): Promise<void> {
     }
   }
 
-  if (isNext) {
-    console.log(`\nCreating a new Next.js app in ${resolvedProjectPath}.`);
-
-    try {
-      await createNextApp({
-        appPath: resolvedProjectPath,
-        packageManager,
-        typescript: program.typescript,
-        eslint: program.eslint,
-        appRouter: program.app,
-        srcDir: program.srcDir,
-        importAlias: program.importAlias,
-        skipInstall: program.skipInstall,
-        empty: program.empty,
-        turbo: program.turbo,
-      });
-    } catch (reason) {
-      if (!(reason instanceof DownloadError)) {
-        throw reason;
-      }
-    }
-  }
-
   if (isReact) {
     console.log(`\nCreating a new React app in ${resolvedProjectPath}.`);
     // todo: create-react-app
@@ -375,6 +390,13 @@ async function run(): Promise<void> {
 
 async function update() {
   return await checkForUpdate(packageJson).catch(() => null);
+}
+
+function selectPackageManager(): PackageManager {
+  if (program.useNpm) return 'npm';
+  if (program.usePnpm) return 'pnpm';
+  if (program.useYarn) return 'yarn';
+  return getPkgManager();
 }
 
 async function notifyUpdate(): Promise<void> {

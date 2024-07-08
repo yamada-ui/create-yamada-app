@@ -18,3 +18,9 @@ export interface InstallTemplateArgs {
   skipInstall: boolean;
   turbo: boolean;
 }
+
+export interface GetTemplateFileArgs {
+  template: TemplateType;
+  mode: TemplateMode;
+  file: string;
+}

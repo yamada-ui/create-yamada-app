@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { yellow } from 'picocolors';
 import spawn from 'cross-spawn';
 import type { PackageManager } from './get-pkg-manager';
@@ -20,7 +21,6 @@ export async function install(
     );
     args.push('--offline');
   }
-
   /**
    * Return a Promise that resolves once the installation is finished.
    */
