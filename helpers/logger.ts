@@ -1,17 +1,20 @@
-import chalk from 'chalk';
+import picocolors from 'picocolors';
 
 export const logger = {
-  error(...args: unknown[]) {
-    console.log(chalk.red(...args));
+  error(arg: string) {
+    return picocolors.red(arg);
   },
-  warn(...args: unknown[]) {
-    console.log(chalk.yellow(...args));
+  warn(arg: string) {
+    return picocolors.yellow(arg);
   },
-  info(...args: unknown[]) {
-    console.log(chalk.cyan(...args));
+  info(arg: string) {
+    return picocolors.cyan(arg);
   },
-  success(...args: unknown[]) {
-    console.log(chalk.green(...args));
+  success(arg: string) {
+    return picocolors.green(arg);
+  },
+  base(arg: string) {
+    return picocolors.white(arg);
   },
   break() {
     console.log('');

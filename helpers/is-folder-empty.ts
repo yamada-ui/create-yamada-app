@@ -1,7 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { green, blue } from 'picocolors';
 import fs from 'fs';
 import path from 'path';
+import { logger } from './logger';
 
 export function isFolderEmpty(root: string, name: string): boolean {
   const validFiles = [
@@ -35,27 +34,27 @@ export function isFolderEmpty(root: string, name: string): boolean {
   );
 
   if (conflicts.length > 0) {
-    console.log(
-      `The directory ${green(name)} contains files that could conflict:`,
+    logger.base(
+      `The directory ${logger.info(name)} contains files that could conflict:`,
     );
-    console.log();
+    logger.break();
     for (const file of conflicts) {
       try {
         const stats = fs.lstatSync(path.join(root, file));
         if (stats.isDirectory()) {
-          console.log(`  ${blue(file)}/`);
+          `${logger.warn(file)}`;
         } else {
-          console.log(`  ${file}`);
+          `  ${logger.base(file)}`;
         }
       } catch {
-        console.log(`  ${file}`);
+        `  ${logger.base(file)}`;
       }
     }
-    console.log();
-    console.log(
+    logger.break();
+    logger.base(
       'Either try using a new directory name, or remove the files listed above.',
     );
-    console.log();
+    logger.break();
     return false;
   }
 

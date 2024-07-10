@@ -10,6 +10,8 @@ export type RepoInfo = {
   filePath: string;
 };
 
+export type Framework = 'next' | 'react' | 'remix' | 'hono' | 'gatsby';
+
 export async function isUrlOk(url: string): Promise<boolean> {
   try {
     const res = await fetch(url, { method: 'HEAD' });
@@ -133,4 +135,20 @@ export async function downloadAndExtractExample(root: string, name: string) {
       filter: (p) => p.includes(`next.js-canary/examples/${name}/`),
     }),
   );
+}
+
+export async function getDefaultTemplate(framework: Framework) {
+  // todo: fix correct url
+  switch (framework) {
+    case 'next':
+      return 'https://github.com/yamada-ui/create-yamada-app/tree/main/framework/next/templates/app/ts';
+    case 'react':
+      return 'https://github.com/yamada-ui/create-yamada-app/tree/main/framework/next/templates/app/ts';
+    case 'remix':
+      return 'https://github.com/yamada-ui/create-yamada-app/tree/main/framework/next/templates/app/ts';
+    case 'hono':
+      return 'https://github.com/yamada-ui/create-yamada-app/tree/main/framework/next/templates/app/ts';
+    case 'gatsby':
+      return 'https://github.com/yamada-ui/create-yamada-app/tree/main/framework/next/templates/app/ts';
+  }
 }
