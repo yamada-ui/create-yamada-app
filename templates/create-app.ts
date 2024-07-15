@@ -14,7 +14,7 @@ import {
   downloadAndExtractRepo,
   downloadAndExtractExample,
   install,
-  logger,
+  c,
 } from '../helpers';
 
 export class DownloadError extends Error {}
@@ -26,7 +26,7 @@ export type CreateNextApp = {
   skipInstall: boolean;
 };
 
-export async function createNextApp({
+export async function createApp({
   appPath,
   packageManager,
   template,
@@ -39,7 +39,7 @@ export async function createNextApp({
     repoUrl = new URL(template);
   } catch (error: any) {
     if (error.code !== 'ERR_INVALID_URL') {
-      logger.error(error);
+      c.error(error);
       process.exit(1);
     }
   }
@@ -47,7 +47,7 @@ export async function createNextApp({
   if (repoUrl) {
     if (repoUrl.origin !== 'https://github.com') {
       console.log(
-        `Invalid URL: ${logger.error(
+        `Invalid URL: ${c.error(
           `"${template}"`,
         )}. Only GitHub repositories are supported. Please use a GitHub URL and try again.`,
       );
@@ -58,7 +58,7 @@ export async function createNextApp({
 
     if (!repoInfo) {
       console.log(
-        `Found invalid GitHub URL: ${logger.error(
+        `Found invalid GitHub URL: ${c.error(
           `"${template}"`,
         )}. Please fix the URL and try again.`,
       );
@@ -69,7 +69,7 @@ export async function createNextApp({
 
     if (!found) {
       console.error(
-        `Could not locate the repository for ${logger.error(
+        `Could not locate the repository for ${c.error(
           `"${template}"`,
         )}. Please check that the repository exists and try again.`,
       );
@@ -80,10 +80,10 @@ export async function createNextApp({
 
     if (!found) {
       console.error(
-        `Could not locate an template named ${logger.error(
+        `Could not locate an template named ${c.error(
           `"${template}"`,
         )}. It could be due to the following:\n`,
-        `1. Your spelling of template ${logger.error(
+        `1. Your spelling of template ${c.error(
           `"${template}"`,
         )} might be incorrect.\n`,
         `2. You might not be connected to the internet or you are behind a proxy.`,
@@ -95,12 +95,10 @@ export async function createNextApp({
   const root = path.resolve(appPath);
 
   if (!(await isWriteable(path.dirname(root)))) {
-    logger.error(
+    c.error(
       'The application path is not writable, please check folder permissions and try again.',
     );
-    logger.error(
-      'It is likely you do not have write permissions for this folder.',
-    );
+    c.error('It is likely you do not have write permissions for this folder.');
     process.exit(1);
   }
 
@@ -115,7 +113,7 @@ export async function createNextApp({
   const isOnline = !useYarn || (await getOnline());
   const originalDirectory = process.cwd();
 
-  console.log(`Creating a new Next.js app in ${logger.success(root)}.`);
+  console.log(`Creating a new Next.js app in ${c.success(root)}.`);
   console.log();
 
   process.chdir(root);
@@ -127,7 +125,7 @@ export async function createNextApp({
     if (repoInfo) {
       const repoInfo2 = repoInfo;
       console.log(
-        `Downloading files from repo ${logger.info(
+        `Downloading files from repo ${c.info(
           template,
         )}. This might take a moment.`,
       );
@@ -136,7 +134,7 @@ export async function createNextApp({
       });
     } else {
       console.log(
-        `Downloading files for template ${logger.info(
+        `Downloading files for template ${c.info(
           template,
         )}. This might take a moment.`,
       );
@@ -158,10 +156,10 @@ export async function createNextApp({
   const packageJsonPath = path.join(root, 'package.json');
   const hasPackageJson = fs.existsSync(packageJsonPath);
   if (hasPackageJson) {
-    logger.base('Installing packages. This might take a couple of minutes.');
-    logger.break();
+    console.log('Installing packages. This might take a couple of minutes.');
+    console.log();
     await install(packageManager, isOnline);
-    logger.break();
+    console.log();
   }
 
   if (tryGitInit(root)) {
@@ -176,5 +174,5 @@ export async function createNextApp({
     cdpath = appPath;
   }
 
-  console.log(`${logger.success('Success!')} Created ${appName} at ${appPath}`);
+  console.log(`${c.success('Success!')} Created ${appName} at ${appPath}`);
 }

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { logger } from './logger';
+import { c } from './color';
 
 export function isFolderEmpty(root: string, name: string): boolean {
   const validFiles = [
@@ -34,27 +34,27 @@ export function isFolderEmpty(root: string, name: string): boolean {
   );
 
   if (conflicts.length > 0) {
-    logger.base(
-      `The directory ${logger.info(name)} contains files that could conflict:`,
+    console.log(
+      `The directory ${c.info(name)} contains files that could conflict:`,
     );
-    logger.break();
+    console.log();
     for (const file of conflicts) {
       try {
         const stats = fs.lstatSync(path.join(root, file));
         if (stats.isDirectory()) {
-          `${logger.warn(file)}`;
+          `${c.warn(file)}`;
         } else {
-          `  ${logger.base(file)}`;
+          `  ${console.log(file)}`;
         }
       } catch {
-        `  ${logger.base(file)}`;
+        `  ${console.log(file)}`;
       }
     }
-    logger.break();
-    logger.base(
+    console.log();
+    console.log(
       'Either try using a new directory name, or remove the files listed above.',
     );
-    logger.break();
+    console.log();
     return false;
   }
 

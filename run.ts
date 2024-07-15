@@ -6,14 +6,14 @@ import fs from 'fs';
 import { bold } from 'picocolors';
 
 import {
+  c,
   getDefaultTemplate,
   getPkgManager,
   isFolderEmpty,
   isString,
-  logger,
   validateNpmName,
 } from './helpers';
-import { DownloadError, createNextApp } from './templates/create-app';
+import { DownloadError, createApp } from './templates/create-app';
 import { promptProjectName } from './prompt/project-name';
 import { promptPackageManager } from './prompt/package-manager';
 import { promptFramework } from './prompt/framework';
@@ -31,7 +31,7 @@ async function run(): Promise<void> {
     .description('Create a new app with yamada-ui in the specified directory.')
     .version(packageJson.version)
     .arguments('[project-directory]')
-    .usage(`${logger.success('[project-directory]')} [options]`)
+    .usage(`${c.success('[project-directory]')} [options]`)
     .action((name) => (projectPath = name))
     .option(
       '--template [name]|[github-url]',
@@ -61,7 +61,7 @@ async function run(): Promise<void> {
     .parse(process.argv)
     .opts();
 
-  console.log('program ================== ', program);
+  console.log(`program ================== ${c.error('program')}`, program);
 
   const packageManager = !!program.useNpm
     ? 'npm'
@@ -86,10 +86,10 @@ async function run(): Promise<void> {
   if (!projectPath) {
     console.log(
       '\nPlease specify the project directory:\n' +
-        `  ${logger.info(program.name())} ${logger.success('<project-directory>')}\n` +
+        `  ${c.info(program.name())} ${c.success('<project-directory>')}\n` +
         'For example:\n' +
-        `  ${logger.info(program.name())} ${logger.success('my-next-app')}\n\n` +
-        `Run ${logger.info(`${program.name()} --help`)} to see all options.`,
+        `  ${c.info(program.name())} ${c.success('my-next-app')}\n\n` +
+        `Run ${c.info(`${program.name()} --help`)} to see all options.`,
     );
     process.exit(1);
   }
@@ -99,13 +99,13 @@ async function run(): Promise<void> {
 
   const validation = validateNpmName(projectName);
   if (!validation.valid) {
-    logger.error(
-      `Could not create a project called ${logger.error(
+    c.error(
+      `Could not create a project called ${c.error(
         `"${projectName}"`,
       )} because of npm naming restrictions:`,
     );
 
-    validation.problems.forEach((p) => `${logger.error(bold('*'))} ${p}`);
+    validation.problems.forEach((p) => `${c.error(bold('*'))} ${p}`);
     process.exit(1);
   }
 
@@ -128,10 +128,12 @@ async function run(): Promise<void> {
     process.exit(1);
   }
 
-  logger.base(`\nCreating a new Next.js app in ${resolvedProjectPath}.`);
+  console.log(
+    `\nCreating a new Next.js app in ${c.primary(resolvedProjectPath)}.`,
+  );
 
   try {
-    await createNextApp({
+    await createApp({
       appPath: resolvedProjectPath,
       packageManager,
       template: program.template.trim(),
@@ -162,17 +164,17 @@ async function notifyUpdate(): Promise<void> {
 run()
   .then(notifyUpdate)
   .catch(async (reason) => {
-    logger.break();
-    logger.base('Aborting installation.');
+    console.log();
+    console.log('Aborting installation.');
     if (reason.command) {
-      `  ${logger.info(reason.command)} has failed.`;
+      `  ${c.info(reason.command)} has failed.`;
     } else {
       console.log(
-        logger.info('Unexpected error. Please report it as a bug:') + '\n',
+        c.info('Unexpected error. Please report it as a bug:') + '\n',
         reason,
       );
     }
-    logger.break();
+    console.log();
 
     await notifyUpdate();
 

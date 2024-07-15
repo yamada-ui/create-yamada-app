@@ -1,7 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { yellow } from 'picocolors';
 import spawn from 'cross-spawn';
 import type { PackageManager } from './get-pkg-manager';
+import { c } from './color';
 
 /**
  * Spawn a package manager installation based on user preference.
@@ -17,7 +16,7 @@ export async function install(
   const args: string[] = ['install'];
   if (!isOnline) {
     console.log(
-      yellow('You appear to be offline.\nFalling back to the local cache.'),
+      c.warn('You appear to be offline.\nFalling back to the local cache.'),
     );
     args.push('--offline');
   }

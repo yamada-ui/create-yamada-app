@@ -5,6 +5,6 @@ export * from './is';
 export * from './is-folder-empty';
 export * from './is-online';
 export * from './is-writeable';
-export * from './logger';
+export * from './color';
 export * from './template';
 export * from './validate-pkg';
