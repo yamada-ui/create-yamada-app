@@ -32,6 +32,13 @@ export async function createApp({
   template,
   skipInstall,
 }: CreateNextApp): Promise<void> {
+  console.log({
+    appPath,
+    packageManager,
+    template,
+    skipInstall,
+  });
+
   let repoInfo: RepoInfo | undefined;
   let repoUrl: URL | undefined;
 
@@ -44,6 +51,8 @@ export async function createApp({
     }
   }
 
+  console.log('repoUrl', repoUrl);
+
   if (repoUrl) {
     if (repoUrl.origin !== 'https://github.com') {
       console.log(
@@ -55,6 +64,8 @@ export async function createApp({
     }
 
     repoInfo = await getRepoInfo(repoUrl);
+
+    console.log('repoInfo', repoInfo);
 
     if (!repoInfo) {
       console.log(
@@ -118,9 +129,7 @@ export async function createApp({
 
   process.chdir(root);
 
-  /**
-   * If an template repository is provided, clone it.
-   */
+  /** If an template repository is provided, clone it. */
   try {
     if (repoInfo) {
       const repoInfo2 = repoInfo;

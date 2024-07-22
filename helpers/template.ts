@@ -64,6 +64,12 @@ export async function getRepoInfo(
   }
 }
 
+// repoInfo {
+//   username: 'yamada-ui',
+//   name: 'create-yamada-app',
+//   branch: 'main',
+//   filePath: 'framework/next/templates/app/ts'
+// }
 export function hasRepo({
   username,
   name,
@@ -141,7 +147,7 @@ export async function getDefaultTemplate(framework: Framework) {
   // todo: fix correct url
   switch (framework) {
     case 'next':
-      return 'https://github.com/yamada-ui/create-yamada-app/tree/main/framework/next/templates/app/ts';
+      return 'https://github.com/yamada-ui/create-yamada-app/tree/feat/create-template/templates/next/app-router';
     case 'react':
       return 'https://github.com/yamada-ui/create-yamada-app/tree/main/framework/next/templates/app/ts';
     case 'remix':
