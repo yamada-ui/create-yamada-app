@@ -1,10 +1,12 @@
 import { InitialReturnValue } from 'prompts';
 
-export const onPromptState = (state: {
+type PromptState = {
   value: InitialReturnValue;
   aborted: boolean;
   exited: boolean;
-}) => {
+};
+
+export const onPromptState = (state: PromptState) => {
   if (state.aborted) {
     // If we don't re-enable the terminal cursor before exiting
     // the program, the cursor will remain hidden

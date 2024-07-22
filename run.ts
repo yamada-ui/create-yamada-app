@@ -111,7 +111,7 @@ async function run(): Promise<void> {
 
   if (!program.template || !isString(program.template)) {
     const { framework } = await promptFramework();
-    program.template = getDefaultTemplate(framework);
+    program.template = await getDefaultTemplate(framework);
   }
 
   if (!program.skipInstall) {
@@ -131,6 +131,8 @@ async function run(): Promise<void> {
   console.log(
     `\nCreating a new Next.js app in ${c.primary(resolvedProjectPath)}.`,
   );
+
+  console.log(program.template);
 
   try {
     await createApp({
