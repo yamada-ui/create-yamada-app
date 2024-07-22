@@ -25,7 +25,9 @@ export async function getRepoInfo(
   url: URL,
   examplePath?: string,
 ): Promise<RepoInfo | undefined> {
-  const [, username, name, t, _branch, ...file] = url.pathname.split('/');
+  // memo: temporary add feat branch
+  const [_, username, name, t, feat, b, ...file] = url.pathname.split('/');
+  const _branch = feat + '/' + b;
   const filePath = examplePath
     ? examplePath.replace(/^\//, '')
     : file.join('/');
