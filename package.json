@@ -40,7 +40,7 @@
     "url": "https://github.com/yamada-ui/create-yamada-app"
   },
   "bugs": {
-    "url": "https://github.com/yamada-ui/yamada-ui/issues"
+    "url": "https://github.com/yamada-ui/create-yamada-app/issues"
   },
   "bin": {
     "create-yamada-app": "./dist/run.js"
