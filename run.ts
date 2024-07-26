@@ -10,7 +10,7 @@ import { DownloadError, createNextApp } from './framework/next/create-next-app';
 import { getPkgManager, isFolderEmpty, validateNpmName } from './helpers';
 import packageJson from './package.json';
 
-let projectPath: string = '';
+let projectPath = '';
 
 const onPromptState = (state: {
   value: InitialReturnValue;

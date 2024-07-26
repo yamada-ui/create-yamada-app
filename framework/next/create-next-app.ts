@@ -13,7 +13,7 @@ import type { TemplateMode, TemplateType } from './templates/types';
 
 export class DownloadError extends Error {}
 
-export type CreateNextApp = {
+export interface CreateNextApp {
   appPath: string;
   packageManager: PackageManager;
   typescript: boolean;
@@ -24,7 +24,7 @@ export type CreateNextApp = {
   skipInstall: boolean;
   empty: boolean;
   turbo: boolean;
-};
+}
 
 export async function createNextApp({
   appPath,
