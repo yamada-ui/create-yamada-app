@@ -23,6 +23,8 @@
   "scripts": {
     "dev": "ncc build ./index.ts -w -o dist/",
     "build": "pnpm release",
+    "lint": "eslint . --max-warnings=0",
+    "lint:inspect": "pnpm dlx @eslint/config-inspector",
     "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'"
   },
   "devDependencies": {
