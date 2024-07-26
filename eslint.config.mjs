@@ -20,6 +20,7 @@ export default tseslintConfig(
   },
   eslint.configs.recommended,
   ...tseslintConfigs.recommended,
+  ...tseslintConfigs.stylistic,
   {
     languageOptions: {
       parser: tseslintparser,
