@@ -25,6 +25,9 @@ export default tseslintConfig(
       parser: tseslintparser,
       parserOptions: {
         ecmaVersion: 'latest',
+        ecmaFeatures: {
+          jsx: true
+        }
       },
       globals: {
         ...globals.browser,
