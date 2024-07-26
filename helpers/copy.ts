@@ -1,6 +1,6 @@
-import { async as glob } from 'fast-glob';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+import { async as glob } from 'fast-glob';
 
 interface CopyOption {
   cwd?: string;

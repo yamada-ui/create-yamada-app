@@ -1,14 +1,14 @@
-import checkForUpdate from 'update-check';
-import packageJson from './package.json';
+import fs from 'fs';
 import path from 'path';
+import ciInfo from 'ci-info';
 import { Command } from 'commander';
 import Conf from 'conf';
-import prompts, { InitialReturnValue } from 'prompts';
-import fs from 'fs';
-import ciInfo from 'ci-info';
 import { cyan, green, red, yellow, bold, blue } from 'picocolors';
-import { getPkgManager, isFolderEmpty, validateNpmName } from './helpers';
+import prompts, { InitialReturnValue } from 'prompts';
+import checkForUpdate from 'update-check';
 import { DownloadError, createNextApp } from './framework/next/create-next-app';
+import { getPkgManager, isFolderEmpty, validateNpmName } from './helpers';
+import packageJson from './package.json';
 
 let projectPath: string = '';
 
@@ -63,13 +63,13 @@ const program = new Command(packageJson.name)
 
 console.log('program ================== ', program);
 
-const packageManager = !!program.useNpm
+const packageManager = program.useNpm
   ? 'npm'
-  : !!program.usePnpm
+  : program.usePnpm
     ? 'pnpm'
-    : !!program.useYarn
+    : program.useYarn
       ? 'yarn'
-      : !!program.useBun
+      : program.useBun
         ? 'bun'
         : getPkgManager();
 
@@ -216,7 +216,7 @@ async function run(): Promise<void> {
          * Depending on the prompt response, set the appropriate program flags.
          */
         program.typescript = Boolean(typescript);
-        program.javascript = !Boolean(typescript);
+        program.javascript = !typescript;
         preferences.typescript = Boolean(typescript);
       }
     }

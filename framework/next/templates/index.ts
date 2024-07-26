@@ -1,11 +1,10 @@
-import { install, copy } from '../../../helpers';
-
-import { async as glob } from 'fast-glob';
-import os from 'os';
 import fs from 'fs/promises';
+import os from 'os';
 import path from 'path';
-import { cyan, bold } from 'picocolors';
 import { Sema } from 'async-sema';
+import { async as glob } from 'fast-glob';
+import { cyan, bold } from 'picocolors';
+import { install, copy } from '../../../helpers';
 // import pkg from '../../../package.json';
 
 import { InstallTemplateArgs } from './types';

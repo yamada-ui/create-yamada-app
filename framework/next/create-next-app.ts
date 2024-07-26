@@ -1,6 +1,6 @@
-import { green } from 'picocolors';
 import fs from 'fs';
 import path from 'path';
+import { green } from 'picocolors';
 import {
   tryGitInit,
   isFolderEmpty,
@@ -8,8 +8,8 @@ import {
   PackageManager,
   isWriteable,
 } from '../../helpers';
-import type { TemplateMode, TemplateType } from './templates/types';
 import { installTemplate } from './templates';
+import type { TemplateMode, TemplateType } from './templates/types';
 
 export class DownloadError extends Error {}
 
