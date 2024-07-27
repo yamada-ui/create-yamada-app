@@ -1,25 +1,50 @@
 {
   "name": "create-yamada-app",
-  "version": "15.0.0-canary.25",
+  "version": "0.1.0",
+  "description": "",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.6.0",
   "keywords": [
+    "yamada",
+    "yamada-ui",
     "react",
+    "ui",
+    "design-system",
+    "react-components",
+    "uikit",
+    "accessible",
+    "components",
+    "emotion",
+    "library",
+    "design-system",
     "next",
     "next.js",
     "remix"
   ],
-  "description": "",
+  "author": "Hirotomo Yamada <hirotomo.yamada@avap.co.jp>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://yamada-ui.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/yamada-ui/create-yamada-app"
   },
-  "author": "Yamada UI Team <hirotomo.yamada@avap.co.jp>",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yamada-ui/create-yamada-app/issues"
+  },
   "bin": {
     "create-yamada-app": "./dist/run.js"
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "dev": "ncc build ./index.ts -w -o dist/",
     "build": "pnpm release",
