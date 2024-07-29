@@ -1,25 +1,50 @@
 {
   "name": "create-yamada-app",
-  "version": "15.0.0-canary.25",
+  "version": "0.1.0",
+  "description": "",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e",
   "keywords": [
+    "yamada",
+    "yamada-ui",
     "react",
+    "ui",
+    "design-system",
+    "react-components",
+    "uikit",
+    "accessible",
+    "components",
+    "emotion",
+    "library",
+    "design-system",
     "next",
     "next.js",
     "remix"
   ],
-  "description": "",
+  "author": "Hirotomo Yamada <hirotomo.yamada@avap.co.jp>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://yamada-ui.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/yamada-ui/create-yamada-app"
   },
-  "author": "Yamada UI Team <hirotomo.yamada@avap.co.jp>",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yamada-ui/create-yamada-app/issues"
+  },
   "bin": {
     "create-yamada-app": "./dist/run.js"
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "dev": "ncc build ./index.ts -w -o dist/",
     "build": "pnpm release",
@@ -32,18 +57,20 @@
     "@eslint/config-inspector": "^0.5.2",
     "@eslint/js": "^9.5.0",
     "@next/eslint-plugin-next": "^14.2.5",
+    "@types/async-retry": "^1.4.8",
     "@types/ci-info": "2.0.0",
     "@types/cross-spawn": "6.0.0",
     "@types/eslint__js": "^8.42.3",
+    "@types/got": "^9.6.12",
     "@types/node": "20.14.2",
     "@types/prompts": "2.4.2",
     "@types/tar": "6.1.13",
     "@types/validate-npm-package-name": "4.0.2",
     "@vercel/ncc": "0.34.0",
+    "async-retry": "^1.3.3",
     "async-sema": "^3.1.1",
     "ci-info": "watson/ci-info#f43f6a1cefff47fb361c88cf4b943fdbcaafe540",
-    "commander": "2.20.0",
-    "conf": "10.2.0",
+    "commander": "^12.1.0",
     "cross-spawn": "7.0.3",
     "eslint": "^9.7.0",
     "eslint-import-resolver-node": "^0.3.9",
@@ -55,6 +82,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "fast-glob": "3.3.1",
     "globals": "^15.8.0",
+    "got": "^14.4.1",
     "picocolors": "1.0.0",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "0.3.0",
@@ -66,7 +94,7 @@
     "update-check": "1.5.4",
     "validate-npm-package-name": "5.0.1"
   },
-  "engines": {
-    "node": ">=18.17.0"
+  "dependencies": {
+    "chalk": "^5.3.0"
   }
 }
