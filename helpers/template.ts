@@ -1,14 +1,14 @@
-/* eslint-disable import/no-extraneous-dependencies */
+ 
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { x } from 'tar';
 
-export type RepoInfo = {
+export interface RepoInfo {
   username: string;
   name: string;
   branch: string;
   filePath: string;
-};
+}
 
 export type Framework = 'next' | 'react' | 'remix' | 'hono' | 'gatsby';
 

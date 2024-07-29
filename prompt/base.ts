@@ -1,10 +1,10 @@
 import { InitialReturnValue } from 'prompts';
 
-type PromptState = {
+interface PromptState {
   value: InitialReturnValue;
   aborted: boolean;
   exited: boolean;
-};
+}
 
 export const onPromptState = (state: PromptState) => {
   if (state.aborted) {

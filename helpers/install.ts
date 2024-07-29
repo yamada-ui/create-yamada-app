@@ -1,7 +1,7 @@
 import spawn from 'cross-spawn';
 import { yellow } from 'picocolors';
-import type { PackageManager } from './get-pkg-manager';
 import { c } from './color';
+import type { PackageManager } from './get-pkg-manager';
 
 /**
  * Spawn a package manager installation based on user preference.

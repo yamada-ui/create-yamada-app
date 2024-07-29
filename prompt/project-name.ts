@@ -1,6 +1,6 @@
+import path from 'path';
 import prompts from 'prompts';
 import { validateNpmName } from '../helpers';
-import path from 'path';
 import { onPromptState } from './base';
 
 export async function promptProjectName() {
