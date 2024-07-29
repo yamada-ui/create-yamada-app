@@ -1,24 +1,24 @@
-'use client'
+'use client';
 
-import { Center, StackProps, VStack } from '@yamada-ui/react'
-import { FC } from 'react'
+import { Center, StackProps, VStack } from '@yamada-ui/react';
+import { FC } from 'react';
 
-export type LayoutProps = StackProps
+export type LayoutProps = StackProps;
 
 export const Layout: FC<LayoutProps> = ({ ...rest }) => {
   return (
     <>
-      <Center as='main' w='full'>
+      <Center as="main" w="full">
         <VStack
-          alignItems='flex-start'
-          w='full'
-          maxW='9xl'
+          alignItems="flex-start"
+          w="full"
+          maxW="9xl"
           gap={{ base: 'lg', md: 'md' }}
-          py='lg'
+          py="lg"
           px={{ base: 'lg', md: 'md' }}
           {...rest}
         />
       </Center>
     </>
-  )
-}
+  );
+};
