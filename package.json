@@ -51,7 +51,7 @@
     "build": "pnpm release",
     "lint": "eslint . --max-warnings=0",
     "lint:inspect": "pnpm dlx @eslint/config-inspector",
-    "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'"
+    "format": "prettier . -w"
   },
   "devDependencies": {
     "@eslint/compat": "^1.1.1",
@@ -85,11 +85,10 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "fast-glob": "3.3.1",
     "globals": "^15.8.0",
-    "lefthook": "^1.7.7",
     "got": "^14.4.1",
+    "lefthook": "^1.7.7",
     "picocolors": "1.0.0",
-    "prettier": "^3.3.2",
-    "prettier-plugin-tailwindcss": "0.3.0",
+    "prettier": "^3.3.3",
     "prompts": "2.4.2",
     "tar": "7.2.0",
     "ts-node": "^10.9.2",
