@@ -1,62 +1,62 @@
-import fs from 'fs';
-import path from 'path';
-import { c } from './color';
+import fs from "fs"
+import path from "path"
+import { c } from "./color"
 
 export function isFolderEmpty(root: string, name: string): boolean {
   const validFiles = [
-    '.DS_Store',
-    '.git',
-    '.gitattributes',
-    '.gitignore',
-    '.gitlab-ci.yml',
-    '.hg',
-    '.hgcheck',
-    '.hgignore',
-    '.idea',
-    '.npmignore',
-    '.travis.yml',
-    'LICENSE',
-    'Thumbs.db',
-    'docs',
-    'mkdocs.yml',
-    'npm-debug.log',
-    'yarn-debug.log',
-    'yarn-error.log',
-    'yarnrc.yml',
-    '.yarn',
-  ];
+    ".DS_Store",
+    ".git",
+    ".gitattributes",
+    ".gitignore",
+    ".gitlab-ci.yml",
+    ".hg",
+    ".hgcheck",
+    ".hgignore",
+    ".idea",
+    ".npmignore",
+    ".travis.yml",
+    "LICENSE",
+    "Thumbs.db",
+    "docs",
+    "mkdocs.yml",
+    "npm-debug.log",
+    "yarn-debug.log",
+    "yarn-error.log",
+    "yarnrc.yml",
+    ".yarn",
+  ]
 
   const conflicts = fs.readdirSync(root).filter(
     (file) =>
       !validFiles.includes(file) &&
       // Support IntelliJ IDEA-based editors
       !/\.iml$/.test(file),
-  );
+  )
 
   if (conflicts.length > 0) {
     console.log(
       `The directory ${c.info(name)} contains files that could conflict:`,
-    );
-    console.log();
+    )
+    console.log()
     for (const file of conflicts) {
       try {
-        const stats = fs.lstatSync(path.join(root, file));
+        const stats = fs.lstatSync(path.join(root, file))
         if (stats.isDirectory()) {
-          `${c.warn(file)}`;
+          ;`${c.warn(file)}`
         } else {
-          `  ${console.log(file)}`;
+          ;`  ${console.log(file)}`
         }
       } catch {
-        `  ${console.log(file)}`;
+        ;`  ${console.log(file)}`
       }
     }
-    console.log();
+    console.log()
     console.log(
-      'Either try using a new directory name, or remove the files listed above.',
-    );
-    console.log();
-    return false;
+      "Either try using a new directory name, or remove the files listed above.",
+    )
+    console.log()
+    return false
   }
 
-  return true;
+  return true
 }

@@ -49,7 +49,7 @@
     "prepare": "lefthook install",
     "dev": "ncc build ./index.ts -w -o dist/",
     "build": "pnpm release",
-    "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'"
+    "format": "prettier . -w"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
@@ -73,11 +73,10 @@
     "eslint-config-prettier": "^9.1.0",
     "fast-glob": "3.3.1",
     "globals": "^15.5.0",
-    "lefthook": "^1.7.7",
     "got": "^14.4.1",
+    "lefthook": "^1.7.7",
     "picocolors": "1.0.0",
-    "prettier": "^3.3.2",
-    "prettier-plugin-tailwindcss": "0.3.0",
+    "prettier": "^3.3.3",
     "prompts": "2.4.2",
     "tar": "7.2.0",
     "ts-node": "^10.9.2",
