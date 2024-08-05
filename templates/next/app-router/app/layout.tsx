@@ -1,4 +1,4 @@
-'use client';
+"use client"
 
 import {
   colorModeManager,
@@ -6,9 +6,9 @@ import {
   UIProvider,
   ColorModeScript,
   ThemeSchemeScript,
-} from '@yamada-ui/react';
-import { ReactNode } from 'react';
-import { theme, config } from '../theme';
+} from "@yamada-ui/react"
+import { ReactNode } from "react"
+import { theme, config } from "../theme"
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -41,7 +41,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         </UIProvider>
       </body>
     </html>
-  );
-};
+  )
+}
 
-export default RootLayout;
+export default RootLayout

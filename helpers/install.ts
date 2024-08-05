@@ -1,6 +1,6 @@
-import spawn from 'cross-spawn';
-import type { PackageManager } from './get-pkg-manager';
-import { c } from './color';
+import spawn from "cross-spawn"
+import type { PackageManager } from "./get-pkg-manager"
+import { c } from "./color"
 
 /**
  * Spawn a package manager installation based on user preference.
@@ -13,12 +13,12 @@ export async function install(
   /** Indicate whether there is an active Internet connection.*/
   isOnline: boolean,
 ): Promise<void> {
-  const args: string[] = ['install'];
+  const args: string[] = ["install"]
   if (!isOnline) {
     console.log(
-      c.warn('You appear to be offline.\nFalling back to the local cache.'),
-    );
-    args.push('--offline');
+      c.warn("You appear to be offline.\nFalling back to the local cache."),
+    )
+    args.push("--offline")
   }
   /**
    * Return a Promise that resolves once the installation is finished.
@@ -28,22 +28,22 @@ export async function install(
      * Spawn the installation process.
      */
     const child = spawn(packageManager, args, {
-      stdio: 'inherit',
+      stdio: "inherit",
       env: {
         ...process.env,
-        ADBLOCK: '1',
+        ADBLOCK: "1",
         // we set NODE_ENV to development as pnpm skips dev
         // dependencies when production
-        NODE_ENV: 'development',
-        DISABLE_OPENCOLLECTIVE: '1',
+        NODE_ENV: "development",
+        DISABLE_OPENCOLLECTIVE: "1",
       },
-    });
-    child.on('close', (code) => {
+    })
+    child.on("close", (code) => {
       if (code !== 0) {
-        reject({ command: `${packageManager} ${args.join(' ')}` });
-        return;
+        reject({ command: `${packageManager} ${args.join(" ")}` })
+        return
       }
-      resolve();
-    });
-  });
+      resolve()
+    })
+  })
 }
