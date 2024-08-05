@@ -49,7 +49,7 @@
     "prepare": "lefthook install",
     "dev": "ncc build ./index.ts -w -o dist/",
     "build": "pnpm release",
-    "format": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'"
+    "format": "prettier . -w"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
