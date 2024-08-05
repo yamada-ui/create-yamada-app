@@ -27,6 +27,14 @@ export async function getRepoInfo(
 ): Promise<RepoInfo | undefined> {
   let [_, username, name, t, _branch, ...file] = url.pathname.split('/');
 
+  if (username === undefined) {
+    return undefined;
+  }
+
+  if (name === undefined) {
+    return undefined;
+  }
+
   if (_branch === 'feat') {
     _branch += `/${file[0]}`;
     file = file.splice(1, file.length);
@@ -65,9 +73,11 @@ export async function getRepoInfo(
     ? `${_branch}/${file.join('/')}`.replace(new RegExp(`/${filePath}|/$`), '')
     : _branch;
 
-  if (username && name && branch && t === 'tree') {
+  if (branch && t === 'tree') {
     return { username, name, branch, filePath };
   }
+
+  return undefined;
 }
 
 // repoInfo {
