@@ -27,11 +27,7 @@ export async function getRepoInfo(
 ): Promise<RepoInfo | undefined> {
   let [_, username, name, t, _branch, ...file] = url.pathname.split("/")
 
-  if (username === undefined) {
-    return undefined
-  }
-
-  if (name === undefined) {
+  if (!username || !name) {
     return undefined
   }
 
