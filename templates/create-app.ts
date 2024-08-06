@@ -1,6 +1,6 @@
-import retry from "async-retry"
 import fs from "fs"
 import path from "path"
+import retry from "async-retry"
 import {
   tryGitInit,
   isFolderEmpty,
@@ -19,7 +19,7 @@ import {
 
 export class DownloadError extends Error {}
 
-export type CreateNextApp = {
+export interface CreateNextApp {
   template: string
   appPath: string
   packageManager: PackageManager

@@ -1,9 +1,8 @@
-import checkForUpdate from "update-check"
-import packageJson from "./package.json"
+import fs from "fs"
 import path from "path"
 import { Command } from "commander"
-import fs from "fs"
 import { bold } from "picocolors"
+import checkForUpdate from "update-check"
 
 import {
   c,
@@ -13,12 +12,13 @@ import {
   isString,
   validateNpmName,
 } from "./helpers"
-import { DownloadError, createApp } from "./templates/create-app"
-import { promptProjectName } from "./prompt/project-name"
-import { promptPackageManager } from "./prompt/package-manager"
+import packageJson from "./package.json"
 import { promptFramework } from "./prompt/framework"
+import { promptPackageManager } from "./prompt/package-manager"
+import { promptProjectName } from "./prompt/project-name"
+import { DownloadError, createApp } from "./templates/create-app"
 
-let projectPath: string = ""
+let projectPath = ""
 
 const handleSigTerm = () => process.exit(0)
 
@@ -63,11 +63,11 @@ async function run(): Promise<void> {
 
   console.log(`program ================== ${c.error("program")}`, program)
 
-  const packageManager = !!program.useNpm
+  const packageManager = program.useNpm
     ? "npm"
-    : !!program.usePnpm
+    : program.usePnpm
       ? "pnpm"
-      : !!program.useYarn
+      : program.useYarn
         ? "yarn"
         : getPkgManager()
 

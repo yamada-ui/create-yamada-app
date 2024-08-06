@@ -1,6 +1,6 @@
 import { execSync } from "child_process"
-import path from "path"
 import fs from "fs"
+import path from "path"
 
 /**
  * Checks if the current directory is in the Git repository.

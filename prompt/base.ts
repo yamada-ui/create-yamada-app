@@ -1,6 +1,6 @@
 import { InitialReturnValue } from "prompts"
 
-type PromptState = {
+interface PromptState {
   value: InitialReturnValue
   aborted: boolean
   exited: boolean

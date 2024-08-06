@@ -1,9 +1,8 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { Readable } from "node:stream"
 import { pipeline } from "node:stream/promises"
 import { x } from "tar"
 
-export type RepoInfo = {
+export interface RepoInfo {
   username: string
   name: string
   branch: string
@@ -25,7 +24,8 @@ export async function getRepoInfo(
   url: URL,
   examplePath?: string,
 ): Promise<RepoInfo | undefined> {
-  let [_, username, name, t, _branch, ...file] = url.pathname.split("/")
+  const [_, username, name, t] = url.pathname.split("/")
+  let [_branch, ...file] = url.pathname.split("/").slice(4)
 
   if (_branch === "feat") {
     _branch += `/${file[0]}`
