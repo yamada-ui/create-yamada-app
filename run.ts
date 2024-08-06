@@ -9,8 +9,10 @@ import {
   c,
   getDefaultTemplate,
   getPkgManager,
+  isBoolean,
   isFolderEmpty,
   isString,
+  PackageManager,
   validateNpmName,
 } from "./helpers"
 import { DownloadError, createApp } from "./templates/create-app"
@@ -24,6 +26,14 @@ const handleSigTerm = () => process.exit(0)
 
 process.on("SIGINT", handleSigTerm)
 process.on("SIGTERM", handleSigTerm)
+
+interface CommandOptions {
+  useNpm?: boolean
+  usePnpm?: boolean
+  useYarn?: boolean
+  template?: string
+  skipInstall?: boolean
+}
 
 async function run(): Promise<void> {
   const program = new Command(packageJson.name)
@@ -59,15 +69,16 @@ async function run(): Promise<void> {
     )
     .allowUnknownOption()
     .parse(process.argv)
-    .opts()
+
+  const opts = program.opts<CommandOptions>()
 
   console.log(`program ================== ${c.error("program")}`, program)
 
-  const packageManager = !!program.useNpm
+  const packageManager = !!opts.useNpm
     ? "npm"
-    : !!program.usePnpm
+    : !!opts.usePnpm
       ? "pnpm"
-      : !!program.useYarn
+      : !!opts.useYarn
         ? "yarn"
         : getPkgManager()
 
@@ -109,15 +120,8 @@ async function run(): Promise<void> {
     process.exit(1)
   }
 
-  if (!program.template || !isString(program.template)) {
-    const { framework } = await promptFramework()
-    program.template = await getDefaultTemplate(framework)
-  }
-
-  if (!program.skipInstall) {
-    const { deps } = await promptPackageManager(packageManager)
-    program.skipInstall = deps
-  }
+  const template = await getTemplate(opts)
+  const skipInstall = await getSkipInstall(opts, packageManager)
 
   /** Verify the project dir is empty or doesn't exist */
   const root = path.resolve(resolvedProjectPath)
@@ -132,20 +136,43 @@ async function run(): Promise<void> {
     `\nCreating a new Next.js app in ${c.primary(resolvedProjectPath)}.`,
   )
 
-  console.log(program.template)
+  console.log(template)
 
   try {
     await createApp({
       appPath: resolvedProjectPath,
       packageManager,
-      template: program.template.trim(),
-      skipInstall: program.skipInstall,
+      template: template.trim(),
+      skipInstall,
     })
   } catch (reason) {
     if (!(reason instanceof DownloadError)) {
       throw reason
     }
   }
+}
+
+const getTemplate = async (
+  opts: Pick<CommandOptions, "template">,
+): Promise<string> => {
+  if (opts.template && isString(opts.template)) {
+    return opts.template
+  }
+
+  const { framework } = await promptFramework()
+  return await getDefaultTemplate(framework)
+}
+
+const getSkipInstall = async (
+  opts: Pick<CommandOptions, "skipInstall">,
+  packageManager: PackageManager,
+): Promise<boolean> => {
+  if (opts.skipInstall && isBoolean(opts.skipInstall)) {
+    return opts.skipInstall
+  }
+
+  const { deps } = await promptPackageManager(packageManager)
+  return deps
 }
 
 async function update() {

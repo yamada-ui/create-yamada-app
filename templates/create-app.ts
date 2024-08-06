@@ -122,7 +122,6 @@ export async function createApp({
 
   const useYarn = packageManager === "yarn"
   const isOnline = !useYarn || (await getOnline())
-  const originalDirectory = process.cwd()
 
   console.log(`Creating a new Next.js app in ${c.success(root)}.`)
   console.log()
@@ -174,13 +173,6 @@ export async function createApp({
   if (tryGitInit(root)) {
     console.log("Initialized a git repository.")
     console.log()
-  }
-
-  let cdpath: string
-  if (path.join(originalDirectory, appName) === appPath) {
-    cdpath = appName
-  } else {
-    cdpath = appPath
   }
 
   console.log(`${c.success("Success!")} Created ${appName} at ${appPath}`)
